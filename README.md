@@ -81,6 +81,21 @@ If I remove both the plugins
 ```
 both command (with and without cross-env) will generate a coverage result (partial, since one test will fail)
 
+Removing `istanbul` from the plugin collection will generate a full coverage file and this would be the result (as expected)
+
+```
+------------------|----------|----------|----------|----------|-------------------|
+File              |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
+------------------|----------|----------|----------|----------|-------------------|
+All files         |      100 |      100 |      100 |      100 |                   |
+ src              |      100 |      100 |      100 |      100 |                   |
+  a-dependency.js |      100 |      100 |      100 |      100 |                   |
+  a-module.js     |      100 |      100 |      100 |      100 |                   |
+ tests            |      100 |      100 |      100 |      100 |                   |
+  test.js         |      100 |      100 |      100 |      100 |                   |
+------------------|----------|----------|----------|----------|-------------------|
+```
+
 ## conclusion
 
 Somehow both rewire and cross-env are creating issue if combined with babel and NYC.
