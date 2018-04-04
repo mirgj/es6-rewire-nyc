@@ -50,7 +50,7 @@ All files         |    64.29 |      100 |    54.55 |    66.67 |                 
 
 but its not correct due the missing rewire plugin.
 
-## babelrc
+## babelrc (es2015)
 ```
 {
   "presets": ["es2015"],
@@ -81,7 +81,7 @@ If I remove both the plugins
 ```
 both command (with and without cross-env) will generate a coverage result (partial, since one test will fail)
 
-Removing `istanbul` from the plugin collection will generate a full coverage file and this would be the result (as expected)
+Removing only `istanbul` from the plugin collection will generate a full coverage file and this would be the result (as expected)
 
 ```
 ------------------|----------|----------|----------|----------|-------------------|
@@ -96,9 +96,34 @@ All files         |      100 |      100 |      100 |      100 |                 
 ------------------|----------|----------|----------|----------|-------------------|
 ```
 
+## babelrc (env)
+
+After going across this issues around the previous `es2015` preset, I moved to the `env` one. Installing it with `npm install babel-preset-env --save-dev` then I've modified my babelrc in this way.
+
+```
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "current"
+      }
+    }]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["istanbul", "rewire"]
+    }
+  }
+}
+```
+
+In this case `npm run test` works properly and `npm run test:cov` will generate a correct coverage report. And there will be no issue with cross-end or rewire.
+
 ## conclusion
 
-Somehow both rewire and cross-env are creating issue if combined with babel and NYC.
+Somehow both rewire and cross-env are creating issue if combined with babel when using the `es2015` preset. To generate the report with this preset apparenttly is sufficient to remove `istanbul` from the babel plugins and use only rewire (it will work well also with cross-env in this case).
+
+I rather suggest to upgrate to the `env` preset and use the babel plugins as suggested (unless it create other issue to your project)
 
 ## env
 ```
@@ -110,4 +135,4 @@ v9.4.0
 Microsoft Windows [Version 10.0.16299.309]
 ```
 
-same behavior has been observed on MacOS
+Same behavior has been observed on MacOS
